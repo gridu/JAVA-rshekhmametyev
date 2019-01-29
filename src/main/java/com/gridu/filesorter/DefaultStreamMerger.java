@@ -9,6 +9,21 @@ class DefaultStreamMerger implements StreamMerger {
                              InputStream stream2,
                              OutputStream outputStream,
                              Comparator<String> comparator) throws IOException {
+        if (stream1 == null) {
+            throw new IllegalArgumentException("First stream cannot be null");
+        }
+
+        if (stream2 == null) {
+            throw new IllegalArgumentException("Second stream cannot be null");
+        }
+
+        if (outputStream == null) {
+            throw new IllegalArgumentException("Output stream cannot be null");
+        }
+
+        if (comparator == null) {
+            throw new IllegalArgumentException("Comparator cannot be null");
+        }
 
         try (BufferedReader reader1 = new BufferedReader(new InputStreamReader(stream1));
              BufferedReader reader2 = new BufferedReader(new InputStreamReader(stream2));
@@ -21,54 +36,70 @@ class DefaultStreamMerger implements StreamMerger {
                                   BufferedReader reader2,
                                   BufferedWriter writer,
                                   Comparator<String> comparator) throws IOException {
-        while (true) {
-            String lineFromFile1 = reader1.readLine();
-            String lineFromFile2 = reader2.readLine();
+        boolean isFirstWrite = true;
+        String lineFromFile1 = reader1.readLine();
+        String lineFromFile2 = reader2.readLine();
 
-            if (lineFromFile1 == null && lineFromFile2 == null) {
+        if (lineFromFile1 == null && lineFromFile2 == null) {
+            return;
+        }
+
+        if (lineFromFile1 == null) {
+            writeAllLinesFromReader(lineFromFile2, true, reader2, writer);
+            return;
+        }
+
+        if (lineFromFile2 == null) {
+            writeAllLinesFromReader(lineFromFile1, true, reader1, writer);
+            return;
+        }
+
+        while (true) {
+            int comparisonResult = comparator.compare(lineFromFile1, lineFromFile2);
+
+            if (!isFirstWrite) {
+                writer.write("\n");
+            }
+
+            if (comparisonResult < 0) {
+                writer.write(lineFromFile1);
+                lineFromFile1 = reader1.readLine();
+            } else if (comparisonResult == 0) {
+                writer.write(lineFromFile1 + "\n" + lineFromFile2);
+                lineFromFile1 = reader1.readLine();
+                lineFromFile2 = reader2.readLine();
+            } else {
+                writer.write(lineFromFile2);
+                lineFromFile2 = reader2.readLine();
+            }
+
+            isFirstWrite = false;
+
+            if (lineFromFile1 == null) {
+                writeAllLinesFromReader(lineFromFile2, false, reader2, writer);
                 break;
             }
 
             if (lineFromFile2 == null) {
-                writeAllLinesFromReader(lineFromFile1, reader1, writer);
+                writeAllLinesFromReader(lineFromFile1, false, reader1, writer);
                 break;
             }
-
-            if (lineFromFile1 == null) {
-                writeAllLinesFromReader(lineFromFile2, reader2, writer);
-                break;
-            }
-
-            writeSorted(lineFromFile1,
-                    lineFromFile2,
-                    writer,
-                    comparator);
         }
     }
 
     private void writeAllLinesFromReader(String alreadyReadLine,
+                                         boolean isFirstWrite,
                                          BufferedReader reader,
                                          BufferedWriter writer) throws IOException {
-        writer.write(alreadyReadLine + "\n");
+        if (!isFirstWrite) {
+            writer.write("\n");
+        }
+
+        writer.write(alreadyReadLine);
         String line;
 
         while ((line = reader.readLine()) != null) {
-            writer.write(line + "\n");
-        }
-    }
-
-    private void writeSorted(String line1,
-                             String line2,
-                             BufferedWriter writer,
-                             Comparator<String> comparator) throws IOException {
-        int comparisonResult = comparator.compare(line1, line2);
-
-        if (comparisonResult <= 0) {
-            writer.write(line1 + "\n");
-            writer.write(line2 + "\n");
-        } else {
-            writer.write(line2 + "\n");
-            writer.write(line1 + "\n");
+            writer.write("\n" + line);
         }
     }
 }
