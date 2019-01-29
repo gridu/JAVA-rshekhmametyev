@@ -17,6 +17,10 @@ class DefaultStreamSplitter implements StreamSplitter {
     public Path splitStreamIntoSortedChunks(InputStream stream,
                                             int numOfLinesInChunk,
                                             Comparator<String> comparator) throws IOException {
+        if (numOfLinesInChunk <= 0) {
+            throw new IllegalArgumentException("Number of lines in a chunk should be a positive number");
+        }
+
         Path tempDirPath = Files.createTempDirectory(UUID.randomUUID().toString());
 
         List<String> lines = new ArrayList<>(numOfLinesInChunk);
@@ -31,6 +35,10 @@ class DefaultStreamSplitter implements StreamSplitter {
                     lines.clear();
                 }
             }
+        }
+
+        if (!lines.isEmpty()) {
+            writeChunkToFile(tempDirPath, lines, comparator);
         }
 
         return tempDirPath;
