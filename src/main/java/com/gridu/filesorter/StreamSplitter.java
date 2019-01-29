@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Comparator;
 
-public interface StreamSplitter {
+interface StreamSplitter {
     Path splitStreamIntoSortedChunks(InputStream stream,
                                      int numOfLinesInChunk,
                                      Comparator<String> comparator) throws IOException;

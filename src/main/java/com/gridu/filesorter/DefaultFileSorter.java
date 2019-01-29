@@ -14,7 +14,7 @@ public class DefaultFileSorter implements FileSorter {
     private final StreamSplitter splitter;
     private final StreamMerger merger;
 
-    public DefaultFileSorter(StreamSplitter splitter, StreamMerger merger) {
+    DefaultFileSorter(StreamSplitter splitter, StreamMerger merger) {
         this.splitter = splitter;
         this.merger = merger;
     }

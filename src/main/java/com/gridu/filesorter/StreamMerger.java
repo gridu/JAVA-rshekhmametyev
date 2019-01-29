@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Comparator;
 
-public interface StreamMerger {
+interface StreamMerger {
     void mergeStreams(InputStream stream1,
                       InputStream stream2,
                       OutputStream outputStream,

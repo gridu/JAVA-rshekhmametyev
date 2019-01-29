@@ -4,6 +4,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Comparator;
 
-public interface FileSorter {
+interface FileSorter {
     Path sortFileByLines(String filePath, Comparator<String> comparator) throws IOException;
 }
