@@ -65,7 +65,7 @@ public class DefaultFileSorter implements FileSorter {
             InputStream file2 = Files.newInputStream(files[i + 1].toPath());
             Path resultFilePath = Files.createFile(dirPath.resolve(UUID.randomUUID().toString()));
 
-            this.merger.mergeStreams(file1, file2, resultFilePath.toString(), comparator);
+            this.merger.mergeStreams(file1, file2, Files.newOutputStream(resultFilePath), comparator);
             files[i].delete();
             files[i + 1].delete();
         }
