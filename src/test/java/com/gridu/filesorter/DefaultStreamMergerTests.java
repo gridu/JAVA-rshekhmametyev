@@ -26,7 +26,7 @@ public class DefaultStreamMergerTests {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         _merger = new DefaultStreamMerger();
     }
 

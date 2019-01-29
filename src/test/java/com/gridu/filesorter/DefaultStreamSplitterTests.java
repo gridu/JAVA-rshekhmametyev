@@ -47,6 +47,8 @@ public class DefaultStreamSplitterTests {
         Path tempDirPath = split(this.streamContents, this.numOfLinesInChunk);
 
         Assert.assertEquals(this.resultNumberOfChunks, Files.list(tempDirPath).count());
+
+        Files.walk(tempDirPath).forEach(DefaultStreamSplitterTests::deleteFile);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -73,5 +75,12 @@ public class DefaultStreamSplitterTests {
         return _splitter.splitStreamIntoSortedChunks(new ByteArrayInputStream(stringToSplit.getBytes()),
                 numOfLinesInChunk,
                 String::compareTo);
+    }
+
+    private static void deleteFile(Path path) {
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+        }
     }
 }
