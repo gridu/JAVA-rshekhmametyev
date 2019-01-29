@@ -14,15 +14,15 @@ import java.util.Collection;
 
 @RunWith(Parameterized.class)
 public class DefaultStreamMergerTests {
-    private final String stream1Contents;
-    private final String stream2Contents;
-    private final String outputResult;
+    private final String _stream1Contents;
+    private final String _stream2Contents;
+    private final String _outputResult;
     private DefaultStreamMerger _merger;
 
     public DefaultStreamMergerTests(String stream1Contents, String stream2Contents, String outputResult) {
-        this.stream1Contents = stream1Contents;
-        this.stream2Contents = stream2Contents;
-        this.outputResult = outputResult;
+        _stream1Contents = stream1Contents;
+        _stream2Contents = stream2Contents;
+        _outputResult = outputResult;
     }
 
     @Before
@@ -45,9 +45,9 @@ public class DefaultStreamMergerTests {
 
     @Test
     public void mergesStreamsCorrectly() throws IOException {
-        OutputStream outputStream = initStreamsAndMerge(this.stream1Contents, this.stream2Contents);
+        OutputStream outputStream = initStreamsAndMerge(_stream1Contents, _stream2Contents);
 
-        Assert.assertEquals(this.outputResult, outputStream.toString());
+        Assert.assertEquals(_outputResult, outputStream.toString());
     }
 
     @Test(expected = IllegalArgumentException.class)

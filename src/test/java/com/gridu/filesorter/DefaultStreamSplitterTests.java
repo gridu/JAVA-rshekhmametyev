@@ -18,14 +18,14 @@ import java.util.Collection;
 public class DefaultStreamSplitterTests {
     private DefaultStreamSplitter _splitter;
 
-    private final String streamContents;
-    private final int numOfLinesInChunk;
-    private final int resultNumberOfChunks;
+    private final String _streamContents;
+    private final int _numOfLinesInChunk;
+    private final int _resultNumberOfChunks;
 
     public DefaultStreamSplitterTests(String streamContents, int numOfLinesInChunk, int resultNumberOfChunks) {
-        this.streamContents = streamContents;
-        this.numOfLinesInChunk = numOfLinesInChunk;
-        this.resultNumberOfChunks = resultNumberOfChunks;
+        _streamContents = streamContents;
+        _numOfLinesInChunk = numOfLinesInChunk;
+        _resultNumberOfChunks = resultNumberOfChunks;
     }
 
     @Before
@@ -44,9 +44,9 @@ public class DefaultStreamSplitterTests {
 
     @Test
     public void splitsIntoChunksCorrectly() throws IOException {
-        Path tempDirPath = split(this.streamContents, this.numOfLinesInChunk);
+        Path tempDirPath = split(_streamContents, _numOfLinesInChunk);
 
-        Assert.assertEquals(this.resultNumberOfChunks, Files.list(tempDirPath).count());
+        Assert.assertEquals(_resultNumberOfChunks, Files.list(tempDirPath).count());
 
         Files.walk(tempDirPath).forEach(DefaultStreamSplitterTests::deleteFile);
     }

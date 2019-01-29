@@ -75,6 +75,10 @@ class DefaultStreamMerger implements StreamMerger {
 
             isFirstWrite = false;
 
+            if (lineFromFile1 == null && lineFromFile2 == null) {
+                break;
+            }
+
             if (lineFromFile1 == null) {
                 writeAllLinesFromReader(lineFromFile2, false, reader2, writer);
                 break;

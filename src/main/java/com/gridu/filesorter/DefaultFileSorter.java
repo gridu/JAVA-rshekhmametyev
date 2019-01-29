@@ -26,6 +26,14 @@ public class DefaultFileSorter implements FileSorter {
 
     @Override
     public Path sortFileByLines(String filePath, Comparator<String> comparator) throws IOException {
+        if (filePath == null) {
+            throw new IllegalArgumentException("File path cannot be null");
+        }
+
+        if (comparator == null) {
+            throw new IllegalArgumentException("Comparator cannot be null");
+        }
+
         Path path = Paths.get(filePath);
 
         if (!Files.exists(path)) {
