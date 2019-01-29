@@ -1,8 +1,9 @@
 package com.gridu.filesorter;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,23 +12,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-class DefaultFileSplitter implements FileSplitter {
+class DefaultStreamSplitter implements StreamSplitter {
     @Override
-    public Path splitFileIntoSortedChunks(String filePath,
+    public Path splitFileIntoSortedChunks(InputStream stream,
                                           String tempDirName,
                                           int numOfLinesInChunk,
                                           Comparator<String> comparator) throws IOException {
-        Path path = Paths.get(filePath);
-
-        if (!Files.exists(path)) {
-            throw new FileNotFoundException();
-        }
-
         Path tempDirPath = Files.createTempDirectory(tempDirName);
 
         List<String> lines = new ArrayList<>(numOfLinesInChunk);
 
-        try (BufferedReader reader = Files.newBufferedReader(path)) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 lines.add(line);

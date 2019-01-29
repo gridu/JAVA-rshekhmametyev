@@ -11,16 +11,16 @@ import java.util.Comparator;
 import java.util.UUID;
 
 public class DefaultFileSorter implements FileSorter {
-    private final FileSplitter splitter;
+    private final StreamSplitter splitter;
     private final StreamMerger merger;
 
-    public DefaultFileSorter(FileSplitter splitter, StreamMerger merger) {
+    public DefaultFileSorter(StreamSplitter splitter, StreamMerger merger) {
         this.splitter = splitter;
         this.merger = merger;
     }
 
     public DefaultFileSorter() {
-        this.splitter = new DefaultFileSplitter();
+        this.splitter = new DefaultStreamSplitter();
         this.merger = new DefaultStreamMerger();
     }
 
@@ -34,7 +34,7 @@ public class DefaultFileSorter implements FileSorter {
 
         int numOfLinesInChunk = 1000;
 
-        Path chunksDir = this.splitter.splitFileIntoSortedChunks(filePath,
+        Path chunksDir = this.splitter.splitFileIntoSortedChunks(Files.newInputStream(path),
                 UUID.randomUUID().toString(),
                 numOfLinesInChunk,
                 comparator);
