@@ -1,26 +1,18 @@
 package com.gridu.filesorter;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Comparator;
 
 class DefaultStreamMerger implements StreamMerger {
     @Override
     public void mergeStreams(InputStream stream1,
                              InputStream stream2,
-                             String resultFilePath,
+                             OutputStream outputStream,
                              Comparator<String> comparator) throws IOException {
-        Path filePath = Paths.get(resultFilePath);
-
-        if (!Files.exists(filePath)) {
-            throw new FileNotFoundException();
-        }
 
         try (BufferedReader reader1 = new BufferedReader(new InputStreamReader(stream1));
              BufferedReader reader2 = new BufferedReader(new InputStreamReader(stream2));
-             BufferedWriter writer = Files.newBufferedWriter(filePath)) {
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream))) {
             mergeFromReaders(reader1, reader2, writer, comparator);
         }
     }
