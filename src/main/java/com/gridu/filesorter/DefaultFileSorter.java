@@ -35,7 +35,6 @@ public class DefaultFileSorter implements FileSorter {
         int numOfLinesInChunk = 1000;
 
         Path chunksDir = this.splitter.splitStreamIntoSortedChunks(Files.newInputStream(path),
-                UUID.randomUUID().toString(),
                 numOfLinesInChunk,
                 comparator);
 

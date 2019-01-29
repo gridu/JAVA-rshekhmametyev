@@ -15,10 +15,9 @@ import java.util.UUID;
 class DefaultStreamSplitter implements StreamSplitter {
     @Override
     public Path splitStreamIntoSortedChunks(InputStream stream,
-                                            String tempDirName,
                                             int numOfLinesInChunk,
                                             Comparator<String> comparator) throws IOException {
-        Path tempDirPath = Files.createTempDirectory(tempDirName);
+        Path tempDirPath = Files.createTempDirectory(UUID.randomUUID().toString());
 
         List<String> lines = new ArrayList<>(numOfLinesInChunk);
 
