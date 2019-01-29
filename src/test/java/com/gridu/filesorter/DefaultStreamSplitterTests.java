@@ -59,6 +59,16 @@ public class DefaultStreamSplitterTests {
         _splitter.splitStreamIntoSortedChunks(new ByteInputStream(), 0, String::compareTo);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionIfInputStreamIsNull() throws IOException {
+        _splitter.splitStreamIntoSortedChunks(null, 10, String::compareTo);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionIfComparatorIsNull() throws IOException {
+        _splitter.splitStreamIntoSortedChunks(new ByteInputStream(), 10, null);
+    }
+
     private Path split(String stringToSplit, int numOfLinesInChunk) throws IOException {
         return _splitter.splitStreamIntoSortedChunks(new ByteArrayInputStream(stringToSplit.getBytes()),
                 numOfLinesInChunk,

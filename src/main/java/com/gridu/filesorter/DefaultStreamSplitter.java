@@ -17,6 +17,14 @@ class DefaultStreamSplitter implements StreamSplitter {
     public Path splitStreamIntoSortedChunks(InputStream stream,
                                             int numOfLinesInChunk,
                                             Comparator<String> comparator) throws IOException {
+        if (stream == null) {
+            throw new IllegalArgumentException("Input stream cannot be null");
+        }
+
+        if (comparator == null) {
+            throw new IllegalArgumentException("Comparator cannot be null");
+        }
+
         if (numOfLinesInChunk <= 0) {
             throw new IllegalArgumentException("Number of lines in a chunk should be a positive number");
         }
