@@ -11,7 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-public class DefaultFileSplitter implements FileSplitter {
+class DefaultFileSplitter implements FileSplitter {
     @Override
     public Path splitFileIntoSortedChunks(String filePath,
                                           String tempDirName,
@@ -27,15 +27,13 @@ public class DefaultFileSplitter implements FileSplitter {
 
         List<String> lines = new ArrayList<>(numOfLinesInChunk);
 
-        int chunkCount = 0;
-
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             String line;
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
 
                 if (lines.size() == numOfLinesInChunk) {
-                    writeChunkToFile(tempDirPath, lines, chunkCount++, comparator);
+                    writeChunkToFile(tempDirPath, lines, comparator);
                     lines.clear();
                 }
             }
@@ -46,7 +44,6 @@ public class DefaultFileSplitter implements FileSplitter {
 
     private void writeChunkToFile(Path tempDirPath,
                                   List<String> lines,
-                                  int chunkCount,
                                   Comparator<String> comparator) throws IOException {
         lines.sort(comparator);
 

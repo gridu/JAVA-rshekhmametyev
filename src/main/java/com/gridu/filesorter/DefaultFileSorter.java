@@ -34,19 +34,22 @@ public class DefaultFileSorter implements FileSorter {
 
         int numOfLinesInChunk = 1000;
 
-        String tempDirName = "chunks";
-
         Path chunksDir = this.splitter.splitFileIntoSortedChunks(filePath,
-                tempDirName,
+                UUID.randomUUID().toString(),
                 numOfLinesInChunk,
                 comparator);
 
         File tempDir = new File(chunksDir.toUri());
 
-        File[] files;
+        File[] files = tempDir.listFiles();
 
-        while ((files = tempDir.listFiles()).length > 1) {
+        if (files == null) {
+            return null;
+        }
+
+        while (files.length > 1) {
             mergeChunks(files, chunksDir, comparator);
+            files = tempDir.listFiles();
         }
 
         return files[0].toPath();

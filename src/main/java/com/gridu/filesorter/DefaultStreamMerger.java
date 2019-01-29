@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 
-public class DefaultStreamMerger implements StreamMerger {
+class DefaultStreamMerger implements StreamMerger {
     @Override
     public void mergeStreams(InputStream stream1,
                              InputStream stream2,
