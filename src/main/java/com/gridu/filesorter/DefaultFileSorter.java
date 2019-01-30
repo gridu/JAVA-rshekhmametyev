@@ -55,7 +55,7 @@ public class DefaultFileSorter implements FileSorter {
         }
 
         while (files.length > 1) {
-            mergeChunks(files, chunksDir, comparator);
+            this.mergeChunks(files, chunksDir, comparator);
             files = tempDir.listFiles();
         }
 

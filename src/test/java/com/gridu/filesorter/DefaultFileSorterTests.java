@@ -14,41 +14,41 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class DefaultFileSorterTests {
-    private DefaultFileSorter _fileSorter;
-    private Path _pathToFile;
+    private DefaultFileSorter fileSorter;
+    private Path pathToFile;
 
     @Before
     public void setUp() throws IOException {
-        _fileSorter = new DefaultFileSorter();
-        _pathToFile = initializeTempFile();
+        this.fileSorter = new DefaultFileSorter();
+        this.pathToFile = initializeTempFile();
     }
 
     @After
     public void tearDown() throws IOException {
-        Files.delete(_pathToFile);
+        Files.delete(this.pathToFile);
     }
 
     @Test(expected = FileNotFoundException.class)
     public void throwsExceptionIfFileNotFound() throws IOException {
-        _fileSorter.sortFileByLines("asdf", String::compareTo);
+        this.fileSorter.sortFileByLines("asdf", String::compareTo);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionIfFileNameIsNull() throws IOException {
-        _fileSorter.sortFileByLines(null, String::compareTo);
+        this.fileSorter.sortFileByLines(null, String::compareTo);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionIfComparatorIsNull() throws IOException {
-        _fileSorter.sortFileByLines("asdf", null);
+        this.fileSorter.sortFileByLines("asdf", null);
     }
 
     @Test
     public void sortsFileCorrectly() throws IOException {
-        Path resultFilePath = _fileSorter.sortFileByLines(_pathToFile.toString(), String::compareTo);
+        Path resultFilePath = this.fileSorter.sortFileByLines(this.pathToFile.toString(), String::compareTo);
 
-        Assert.assertEquals(Files.lines(_pathToFile).sorted().collect(Collectors.joining("\n")),
-                Files.lines(resultFilePath).collect(Collectors.joining("\n")));
+        Assert.assertEquals(Files.lines(this.pathToFile).sorted().collect(Collectors.joining("\n")),
+        Files.lines(resultFilePath).collect(Collectors.joining("\n")));
     }
 
     private static Path initializeTempFile() throws IOException {

@@ -39,14 +39,14 @@ class DefaultStreamSplitter implements StreamSplitter {
                 lines.add(line);
 
                 if (lines.size() == numOfLinesInChunk) {
-                    writeChunkToFile(tempDirPath, lines, comparator);
+                    this.writeChunkToFile(tempDirPath, lines, comparator);
                     lines.clear();
                 }
             }
         }
 
         if (!lines.isEmpty()) {
-            writeChunkToFile(tempDirPath, lines, comparator);
+            this.writeChunkToFile(tempDirPath, lines, comparator);
         }
 
         return tempDirPath;

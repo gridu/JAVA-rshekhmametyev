@@ -16,21 +16,21 @@ import java.util.Collection;
 
 @RunWith(Parameterized.class)
 public class DefaultStreamSplitterTests {
-    private DefaultStreamSplitter _splitter;
+    private DefaultStreamSplitter splitter;
 
-    private final String _streamContents;
-    private final int _numOfLinesInChunk;
-    private final int _resultNumberOfChunks;
+    private final String streamContents;
+    private final int numOfLinesInChunk;
+    private final int resultNumberOfChunks;
 
     public DefaultStreamSplitterTests(String streamContents, int numOfLinesInChunk, int resultNumberOfChunks) {
-        _streamContents = streamContents;
-        _numOfLinesInChunk = numOfLinesInChunk;
-        _resultNumberOfChunks = resultNumberOfChunks;
+        this.streamContents = streamContents;
+        this.numOfLinesInChunk = numOfLinesInChunk;
+        this.resultNumberOfChunks = resultNumberOfChunks;
     }
 
     @Before
     public void setUp() {
-        _splitter = new DefaultStreamSplitter();
+        this.splitter = new DefaultStreamSplitter();
     }
 
     @Parameterized.Parameters
@@ -44,35 +44,35 @@ public class DefaultStreamSplitterTests {
 
     @Test
     public void splitsIntoChunksCorrectly() throws IOException {
-        Path tempDirPath = split(_streamContents, _numOfLinesInChunk);
+        Path tempDirPath = split(this.streamContents, this.numOfLinesInChunk);
 
-        Assert.assertEquals(_resultNumberOfChunks, Files.list(tempDirPath).count());
+        Assert.assertEquals(this.resultNumberOfChunks, Files.list(tempDirPath).count());
 
         Files.walk(tempDirPath).forEach(DefaultStreamSplitterTests::deleteFile);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionIfNumberOfLinesInChunkIsLessThanZero() throws IOException {
-        _splitter.splitStreamIntoSortedChunks(new ByteInputStream(), -10, String::compareTo);
+        this.splitter.splitStreamIntoSortedChunks(new ByteInputStream(), -10, String::compareTo);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionIfNumberOfLinesInChunkIsZero() throws IOException {
-        _splitter.splitStreamIntoSortedChunks(new ByteInputStream(), 0, String::compareTo);
+        this.splitter.splitStreamIntoSortedChunks(new ByteInputStream(), 0, String::compareTo);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionIfInputStreamIsNull() throws IOException {
-        _splitter.splitStreamIntoSortedChunks(null, 10, String::compareTo);
+        this.splitter.splitStreamIntoSortedChunks(null, 10, String::compareTo);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionIfComparatorIsNull() throws IOException {
-        _splitter.splitStreamIntoSortedChunks(new ByteInputStream(), 10, null);
+        this.splitter.splitStreamIntoSortedChunks(new ByteInputStream(), 10, null);
     }
 
     private Path split(String stringToSplit, int numOfLinesInChunk) throws IOException {
-        return _splitter.splitStreamIntoSortedChunks(new ByteArrayInputStream(stringToSplit.getBytes()),
+        return this.splitter.splitStreamIntoSortedChunks(new ByteArrayInputStream(stringToSplit.getBytes()),
                 numOfLinesInChunk,
                 String::compareTo);
     }

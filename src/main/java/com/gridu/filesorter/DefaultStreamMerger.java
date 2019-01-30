@@ -28,7 +28,7 @@ class DefaultStreamMerger implements StreamMerger {
         try (BufferedReader reader1 = new BufferedReader(new InputStreamReader(stream1));
              BufferedReader reader2 = new BufferedReader(new InputStreamReader(stream2));
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            mergeFromReaders(reader1, reader2, writer, comparator);
+            this.mergeFromReaders(reader1, reader2, writer, comparator);
         }
     }
 
@@ -45,12 +45,12 @@ class DefaultStreamMerger implements StreamMerger {
         }
 
         if (lineFromFile1 == null) {
-            writeAllLinesFromReader(lineFromFile2, true, reader2, writer);
+            this.writeAllLinesFromReader(lineFromFile2, true, reader2, writer);
             return;
         }
 
         if (lineFromFile2 == null) {
-            writeAllLinesFromReader(lineFromFile1, true, reader1, writer);
+            this.writeAllLinesFromReader(lineFromFile1, true, reader1, writer);
             return;
         }
 
@@ -80,12 +80,12 @@ class DefaultStreamMerger implements StreamMerger {
             }
 
             if (lineFromFile1 == null) {
-                writeAllLinesFromReader(lineFromFile2, false, reader2, writer);
+                this.writeAllLinesFromReader(lineFromFile2, false, reader2, writer);
                 break;
             }
 
             if (lineFromFile2 == null) {
-                writeAllLinesFromReader(lineFromFile1, false, reader1, writer);
+                this.writeAllLinesFromReader(lineFromFile1, false, reader1, writer);
                 break;
             }
         }

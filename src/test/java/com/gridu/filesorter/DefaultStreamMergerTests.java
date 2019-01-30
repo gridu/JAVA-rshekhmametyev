@@ -14,20 +14,20 @@ import java.util.Collection;
 
 @RunWith(Parameterized.class)
 public class DefaultStreamMergerTests {
-    private final String _stream1Contents;
-    private final String _stream2Contents;
-    private final String _outputResult;
-    private DefaultStreamMerger _merger;
+    private final String stream1Contents;
+    private final String stream2Contents;
+    private final String outputResult;
+    private DefaultStreamMerger merger;
 
     public DefaultStreamMergerTests(String stream1Contents, String stream2Contents, String outputResult) {
-        _stream1Contents = stream1Contents;
-        _stream2Contents = stream2Contents;
-        _outputResult = outputResult;
+        this.stream1Contents = stream1Contents;
+        this.stream2Contents = stream2Contents;
+        this.outputResult = outputResult;
     }
 
     @Before
     public void setUp() {
-        _merger = new DefaultStreamMerger();
+        this.merger = new DefaultStreamMerger();
     }
 
     @Parameterized.Parameters
@@ -45,9 +45,9 @@ public class DefaultStreamMergerTests {
 
     @Test
     public void mergesStreamsCorrectly() throws IOException {
-        OutputStream outputStream = initStreamsAndMerge(_stream1Contents, _stream2Contents);
+        OutputStream outputStream = initStreamsAndMerge(this.stream1Contents, this.stream2Contents);
 
-        Assert.assertEquals(_outputResult, outputStream.toString());
+        Assert.assertEquals(this.outputResult, outputStream.toString());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -79,7 +79,7 @@ public class DefaultStreamMergerTests {
         InputStream stream2 = new ByteArrayInputStream(lines2.getBytes());
         OutputStream outputStream = new ByteArrayOutputStream();
 
-        _merger.mergeStreams(stream1, stream2, outputStream, String::compareTo);
+        this.merger.mergeStreams(stream1, stream2, outputStream, String::compareTo);
 
         return outputStream;
     }
